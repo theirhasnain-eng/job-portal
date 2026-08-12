@@ -7,7 +7,7 @@ import { getAdminJobs, getAllJobs, getJobById, postJob, updateJob, deleteJob } f
 const jobsRouter = express.Router();
 
 jobsRouter.post("/post", isAuthenticated, postJob);
-jobsRouter.get("/get", isAuthenticated, getAllJobs);
+jobsRouter.get("/get", getAllJobs);
 jobsRouter.get("/getadminjobs", isAuthenticated, getAdminJobs);
 jobsRouter.get("/get/:id",getJobById);
 jobsRouter.put("/update/:id", isAuthenticated, updateJob);
