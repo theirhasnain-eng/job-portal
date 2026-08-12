@@ -97,7 +97,7 @@ function Navebar() {
                   <div>
                     <Link
                       to="/browsjobs"
-                      className="hover:text-white text-sm font-semibold hover:font-bold"
+                      className="hover:text-white mr-3 text-sm font-semibold hover:font-bold"
                     >
                       Browse jobs
                     </Link>
