@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema(
       enum: ["candidate", "recruiter", "admin"],
       required: true,
     },
+    isActive: {
+    type: Boolean,
+    default: true,
+     },
   },
   { timestamps: true }
 );

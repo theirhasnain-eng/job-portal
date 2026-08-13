@@ -126,6 +126,13 @@ function Navebar() {
                 {user.role === "admin" && (
                   <div>
                     <Link
+                      to="/users"
+                      onClick={closeMenu}
+                      className="text-white text-sm mr-3 font-semibold py-2"
+                    >
+                      Registerd Users
+                    </Link>
+                    <Link
                       to="/browsjobs"
                       className="hover:text-white mr-3 text-sm font-semibold hover:font-bold"
                     >
@@ -247,12 +254,20 @@ function Navebar() {
               {user.role === "admin" && (
                 <>
                   <Link
+                    to="/users"
+                    onClick={closeMenu}
+                    className="text-white text-sm mr-3 font-semibold py-2"
+                  >
+                    Registerd Users
+                  </Link>
+                  <Link
                     to="/browsjobs"
                     onClick={closeMenu}
                     className="text-white text-sm font-semibold py-2"
                   >
                     Browse jobs
                   </Link>
+
                   <Link
                     to="/dashboard"
                     onClick={closeMenu}
