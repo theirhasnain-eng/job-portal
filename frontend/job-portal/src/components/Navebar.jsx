@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
@@ -7,6 +8,7 @@ import { USER_API_END_POINT } from "../utils/constant";
 function Navebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const logoutHandler = async () => {
     try {
@@ -20,10 +22,13 @@ function Navebar() {
       logout();
       navigate("/");
       toast.success("Logged out successfully");
+      setMenuOpen(false);
     } catch (error) {
       toast.error("Something went wrong");
     }
   };
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <header className="sticky top-0 z-40 border-b border-ink-100 bg-[#0FA88A] backdrop-blur">
@@ -32,6 +37,7 @@ function Navebar() {
           <div className="nav-left">
             <Link
               to="/"
+              onClick={closeMenu}
               className="flex items-center gap-2 font-display text-xl font-semibold text-ink-950"
             >
               <div className="flex h-7 w-7 items-center justify-center rounded-md bg-white text-sm font-bold text-black">
@@ -41,10 +47,34 @@ function Navebar() {
             </Link>
           </div>
 
-          <div className="nav-right flex items-center gap-6 text-sm text-ink-500">
+          {/* Hamburger button - only visible on mobile */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden flex flex-col justify-center items-center gap-1.5 h-9 w-9 rounded-md hover:bg-white/10"
+            aria-label="Toggle menu"
+          >
+            <span
+              className={`block h-0.5 w-6 bg-white transition-transform duration-300 ${
+                menuOpen ? "translate-y-2 rotate-45" : ""
+              }`}
+            />
+            <span
+              className={`block h-0.5 w-6 bg-white transition-opacity duration-300 ${
+                menuOpen ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <span
+              className={`block h-0.5 w-6 bg-white transition-transform duration-300 ${
+                menuOpen ? "-translate-y-2 -rotate-45" : ""
+              }`}
+            />
+          </button>
+
+          {/* Desktop nav */}
+          <div className="nav-right hidden md:flex items-center gap-6 text-sm text-ink-500">
             {!user ? (
               // ---- LOGGED OUT ----
-              <div>
+              <div className="flex items-center">
                 <Link
                   to="/"
                   className="hover:text-white hover:font-bold text-sm font-semibold mr-2"
@@ -119,12 +149,6 @@ function Navebar() {
                     >
                       Browse jobs
                     </Link>
-                    {/* <Link
-                     to="/candidatedashboard"
-                    className="hover:text-white text-sm font-semibold hover:font-bold"
-                   >
-                     My Applications
-                  </Link> */}
                   </div>
                 )}
 
@@ -147,6 +171,117 @@ function Navebar() {
             )}
           </div>
         </nav>
+      </div>
+
+      {/* Mobile menu (slides down, only visible when open) */}
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          menuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="flex flex-col gap-3 px-6 pb-6 pt-2 border-t border-white/20">
+          {!user ? (
+            // ---- LOGGED OUT (mobile) ----
+            <>
+              <Link
+                to="/"
+                onClick={closeMenu}
+                className="text-white text-sm font-semibold py-2"
+              >
+                Home
+              </Link>
+              <Link
+                to="/login"
+                onClick={closeMenu}
+                className="text-sm font-semibold p-3 rounded-2xl bg-gray-50 text-center"
+              >
+                Login
+              </Link>
+              <Link
+                to="/signup"
+                onClick={closeMenu}
+                className="p-3 rounded-2xl bg-black text-white font-semibold text-center"
+              >
+                Get started
+              </Link>
+            </>
+          ) : (
+            // ---- LOGGED IN (mobile) ----
+            <>
+              <div className="flex items-center gap-2 bg-white/20 px-3 py-2 rounded-full w-fit">
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-xs font-bold text-[#0FA88A]">
+                  {user.fullname?.charAt(0).toUpperCase()}
+                </div>
+                <span className="text-white text-sm font-semibold">
+                  {user.fullname}
+                </span>
+              </div>
+
+              <Link
+                to="/"
+                onClick={closeMenu}
+                className="text-white text-sm font-semibold py-2"
+              >
+                Home
+              </Link>
+
+              {user.role === "recruiter" && (
+                <>
+                  <Link
+                    to="/postjob"
+                    onClick={closeMenu}
+                    className="text-white text-sm font-semibold py-2"
+                  >
+                    List Job
+                  </Link>
+                  <Link
+                    to="/recruiterdashboard"
+                    onClick={closeMenu}
+                    className="text-white text-sm font-semibold py-2"
+                  >
+                    Dashboard
+                  </Link>
+                </>
+              )}
+
+              {user.role === "admin" && (
+                <>
+                  <Link
+                    to="/browsjobs"
+                    onClick={closeMenu}
+                    className="text-white text-sm font-semibold py-2"
+                  >
+                    Browse jobs
+                  </Link>
+                  <Link
+                    to="/dashboard"
+                    onClick={closeMenu}
+                    className="text-white text-sm font-semibold py-2"
+                  >
+                    Admin Panel
+                  </Link>
+                </>
+              )}
+
+              {user.role === "candidate" && (
+                <Link
+                  to="/browsjobs"
+                  onClick={closeMenu}
+                  className="text-white text-sm font-semibold py-2"
+                >
+                  Browse jobs
+                </Link>
+              )}
+
+              <button
+                onClick={logoutHandler}
+                className="text-sm font-semibold p-3 rounded-2xl bg-gray-50 text-center"
+              >
+                Logout
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );

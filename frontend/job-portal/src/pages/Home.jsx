@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
 
 function Home() {
   const [search, setSearch] = useState("");
   return (
     <div>
-    
       <section className="bg-gray-50 px-8 py-24">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-[#0FA88A] text-xs font-bold tracking-widest uppercase mb-4">
@@ -19,30 +16,6 @@ function Home() {
             Job Finder connects job seekers with recruiters posting real, open
             positions — reviewed by an admin team so listings stay current and
             applications never disappear into a black hole.
-          </p>
-
-          {/* Search bar */}
-          <div className="flex items-center bg-white rounded-full shadow-sm border border-gray-200 p-1.5 max-w-xl mx-auto">
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Job title, skill, or company"
-              className="flex-1 px-4 py-2.5 text-sm outline-none rounded-full text-gray-700 placeholder-gray-400"
-            />
-            <button className="bg-gray-900 text-white text-sm font-semibold px-6 py-2.5 rounded-full hover:bg-gray-800 transition whitespace-nowrap">
-              Search jobs
-            </button>
-          </div>
-
-          <p className="text-gray-500 text-sm mt-4">
-            Or{" "}
-            <Link
-              to="/browsjobs"
-              className="text-[#0FA88A] font-medium underline hover:text-[#0c8f75]"
-            >
-              browse every open role
-            </Link>
           </p>
         </div>
       </section>
@@ -93,7 +66,6 @@ function Home() {
           </div>
         </div>
       </section>
-      
     </div>
   );
 }

@@ -21,11 +21,6 @@ function Footer() {
           </h3>
           <ul className="flex flex-col gap-2 text-sm text-white/80">
             <li>
-              <Link to="/browsjobs" className="hover:text-white transition">
-                Browse Jobs
-              </Link>
-            </li>
-            <li>
               <Link to="/signup" className="hover:text-white transition">
                 Create Account
               </Link>
