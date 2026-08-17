@@ -6,7 +6,7 @@ function TotalUsers() {
 
   const fetchUsers = useCallback(async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/admin/users`, {
+      const res = await axios.get(`${Admin_API_END_POINT}/get/users`, {
         withCredentials: true,
       });
       setUsers(res.data.users); // matches backend's "users" key
@@ -22,7 +22,7 @@ function TotalUsers() {
   const toggleStatus = async (id) => {
     try {
       await axios.patch(
-        `http://localhost:8000/api/admin/users/${id}/status`,
+        `${Admin_API_END_POINT}/users/${id}/status`,
         {},
         {
           withCredentials: true,
