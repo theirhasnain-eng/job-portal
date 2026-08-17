@@ -7,7 +7,7 @@ function TotalUsers() {
 
   const fetchUsers = useCallback(async () => {
     try {
-      const res = await axios.get(`${Admin_API_END_POINT}/get/users`, {
+      const res = await axios.get(`${Admin_API_END_POINT}/users`, {
         withCredentials: true,
       });
       setUsers(res.data.users); // matches backend's "users" key
