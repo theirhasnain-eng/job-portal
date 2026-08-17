@@ -128,7 +128,7 @@ function Navebar() {
                     <Link
                       to="/users"
                       onClick={closeMenu}
-                      className="text-white text-sm mr-3 font-semibold py-2"
+                      className="hover:text-white mr-3 text-sm font-semibold hover:font-bold"
                     >
                       Registerd Users
                     </Link>

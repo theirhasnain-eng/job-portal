@@ -79,6 +79,14 @@ export const login = async (req, res) => {
       });
     }
 
+    // Block login for deactivated users
+    if (!user.isActive) {
+      return res.status(403).json({
+        message: "Your account has been blocked. Please contact support.",
+        success: false,
+      });
+    }
+
     const token = jwt.sign(
       { userId: user._id },
       process.env.SECRET_KEY,
@@ -89,9 +97,9 @@ export const login = async (req, res) => {
       .status(200)
       .cookie("token", token, {
         httpOnly: true,
-        sameSite: "strict",
+        sameSite: "none",
+        secure: true,
         maxAge: 24 * 60 * 60 * 1000,
-        secure: false,
       })
       .json({
         message: `Welcome back ${user.fullname}`,
@@ -104,6 +112,7 @@ export const login = async (req, res) => {
         },
         success: true,
       });
+
   } catch (error) {
     console.error(error);
     return res.status(500).json({

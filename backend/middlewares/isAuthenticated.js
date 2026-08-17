@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import User from "../models/user.model.js";
 
 const isAuthenticated = async (req, res, next) => {
     try {
@@ -18,6 +19,14 @@ const isAuthenticated = async (req, res, next) => {
             });
         }
 
+        const user = await User.findById(decode.userId);
+        if (!user || !user.isActive) {
+            return res.status(403).json({
+                message: "Your account has been blocked.",
+                success: false
+            });
+        }
+
         req.id = decode.userId;
         next();
 
@@ -28,6 +37,10 @@ const isAuthenticated = async (req, res, next) => {
             success: false
         });
     }
+
+
 }
+
+
 
 export default isAuthenticated;
