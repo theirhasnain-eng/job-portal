@@ -14,11 +14,11 @@ const userSchema = new mongoose.Schema(
     },
 
     companyname: {
-     type: String,
+      type: String,
       unique: true,
-      required:false,
-     sparse: true,   // allows many docs with no companyname (candidates), only enforces uniqueness when a value IS provided
-      },
+      required: false,
+      sparse: true, // allows many docs with no companyname (candidates), only enforces uniqueness when a value IS provided
+    },
 
     password: {
       type: String,
@@ -31,10 +31,17 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     isActive: {
-    type: Boolean,
-    default: true,
-     },
+      type: Boolean,
+      default: true,
+    },
+    savedJobs: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Job",
+      },
+    ],
   },
+
   { timestamps: true }
 );
 

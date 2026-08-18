@@ -151,6 +151,12 @@ function Navebar() {
                 {user.role === "candidate" && (
                   <div>
                     <Link
+                      to="/savejob"
+                      className="hover:text-white text-sm font-semibold mr-3 hover:font-bold"
+                    >
+                      Saved Jobs
+                    </Link>
+                    <Link
                       to="/browsjobs"
                       className="hover:text-white text-sm font-semibold hover:font-bold"
                     >
@@ -279,13 +285,21 @@ function Navebar() {
               )}
 
               {user.role === "candidate" && (
-                <Link
-                  to="/browsjobs"
-                  onClick={closeMenu}
-                  className="text-white text-sm font-semibold py-2"
-                >
-                  Browse jobs
-                </Link>
+                <div>
+                  <Link
+                    to="/savejob"
+                    className="hover:text-white text-sm font-semibold mr-3 hover:font-bold"
+                  >
+                    Saved Jobs
+                  </Link>
+                  <Link
+                    to="/browsjobs"
+                    onClick={closeMenu}
+                    className="text-white text-sm font-semibold py-2"
+                  >
+                    Browse jobs
+                  </Link>
+                </div>
               )}
 
               <button

@@ -6,6 +6,7 @@ import connectDB from "./utils/db.js"
 import userRouter from "./routes/user.route.js"
 import jobsRouter from "./routes/jobs.route.js"
 import adminRouter from "./routes/admin.route.js"
+import savejobsRouter from "./routes/savedjob.route.js"
 
 dotenv.config({})
 
@@ -33,9 +34,11 @@ app.use(cors(corsOptions))
 
 const PORT= process.env.PORT ||3000
 
-app.use("/api/user/", userRouter)
+app.use("/api/user/", userRouter,savejobsRouter)
 app.use("/api/job/" , jobsRouter)
 app.use("/api/admin/", adminRouter)
+
+
 
 app.listen(PORT,()=>{
     connectDB()

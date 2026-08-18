@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
-import { JOB_API_END_POINT } from "../utils/constant";
+import { JOB_API_END_POINT, USER_API_END_POINT } from "../utils/constant";
 
 function JobDetails() {
   const { id } = useParams();
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -29,6 +31,41 @@ function JobDetails() {
     };
     fetchJob();
   }, [id]);
+
+  useEffect(() => {
+    // check if this job is already in the user's saved list
+    const checkSaved = async () => {
+      try {
+        const res = await axios.get(`${USER_API_END_POINT}/saved-jobs`, {
+          withCredentials: true,
+        });
+        if (res.data.success) {
+          const isSaved = res.data.savedJobs.some((j) => j._id === id);
+          setSaved(isSaved);
+        }
+      } catch (err) {
+        // not logged in, or not a candidate — silently ignore
+        console.log(err);
+      }
+    };
+    checkSaved();
+  }, [id]);
+
+  const toggleSave = async () => {
+    setSaving(true);
+    try {
+      const res = await axios.patch(
+        `${USER_API_END_POINT}/saved-jobs/${id}`,
+        {},
+        { withCredentials: true },
+      );
+      setSaved(res.data.saved);
+    } catch (err) {
+      console.error("Failed to toggle save", err);
+    } finally {
+      setSaving(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -98,11 +135,21 @@ function JobDetails() {
             {job.requirements}
           </p>
         </div>
-        
-          <button className="w-full py-3 rounded-lg bg-black text-white font-semibold hover:bg-gray-800 transition">
+
+        <div className="flex items-center gap-3">
+          <button className="flex-1 py-3 rounded-lg bg-black text-white font-semibold hover:bg-gray-800 transition">
             Apply Now
           </button>
-        
+          <button
+            onClick={() => toggleSave(job._id)}
+            disabled={saving}
+            className={`text-sm p-4 rounded-lg bg-[#0FA88A] font-medium disabled:opacity-50 ${
+              saved ? "text-red-500" : "text-[#12345d]"
+            }`}
+          >
+            {saving ? "..." : saved ? " Saved" : " Save"}
+          </button>
+        </div>
       </div>
     </div>
   );

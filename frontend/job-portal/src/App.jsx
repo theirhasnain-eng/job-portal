@@ -13,6 +13,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Navebar from "./components/Navebar";
 import Footer from "./components/Footer";
 import TotalUsers from "./pages/TotalUsers";
+import SaveJobs from "./pages/SaveJobs";
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/browsjobs" element={<Browsjob />} />
         <Route path="/jobdetails/:id" element={<JobDetails />} />
-        <Route path="/users" element={<TotalUsers/>} />
+        <Route path="/users" element={<TotalUsers />} />
+        <Route path="/savejob" element={<SaveJobs />} />
         <Route
           path="/candidatedashboard"
           element={
